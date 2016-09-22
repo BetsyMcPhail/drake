@@ -167,7 +167,7 @@ void RigidBodyPlant<T>::EvalTimeDerivatives(
   // dynamicsBiasTerm.
   // TODO(amcastro-tri): external_wrenches should be made an optional parameter
   // of dynamicsBiasTerm().
-  const RigidBodyTree::BodyToWrenchMap<double> no_external_wrenches;
+  RigidBodyTree::BodyToWrenchMap<double> no_external_wrenches;
   // right_hand_side is the right hand side of the system's equations:
   // [H, -J^T] * [vdot; f] = -right_hand_side.
   VectorX<T> right_hand_side = tree_->dynamicsBiasTerm(kinsol,

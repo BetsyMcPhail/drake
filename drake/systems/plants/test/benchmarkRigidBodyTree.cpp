@@ -60,7 +60,7 @@ void scenario2(
   default_random_engine generator;
   uniform_real_distribution<> uniform(0, 1);
 
-  const RigidBodyTree::BodyToWrenchMap<Scalar> no_external_wrenches;
+  RigidBodyTree::BodyToWrenchMap<Scalar> no_external_wrenches;
   for (const auto& state : states) {
     cache.initialize(state.first, state.second);
     model.doKinematics(cache, true);

@@ -2296,7 +2296,7 @@ void GravityCompensationTorqueConstraint::eval(const double* t,
       q);
   KinematicsCache<Scalar> cache_with_gradients =
       getRobotPointer()->doKinematics(q);
-  const RigidBodyTree::BodyToWrenchMap<Scalar> no_external_wrenches;
+  RigidBodyTree::BodyToWrenchMap<Scalar> no_external_wrenches;
   auto G_autodiff = getRobotPointer()->dynamicsBiasTerm(
       cache_with_gradients, no_external_wrenches, false);
   auto G = autoDiffToValueMatrix(G_autodiff);

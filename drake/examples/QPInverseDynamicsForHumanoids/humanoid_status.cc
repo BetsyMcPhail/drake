@@ -36,7 +36,7 @@ void HumanoidStatus::Update(double t, const VectorXd& q, const VectorXd& v,
   robot_->doKinematics(cache_, true);
 
   M_ = robot_->massMatrix(cache_);
-  const RigidBodyTree::BodyToWrenchMap<double> no_external_wrenches;
+  RigidBodyTree::BodyToWrenchMap<double> no_external_wrenches;
   bias_term_ = robot_->dynamicsBiasTerm(cache_, no_external_wrenches);
 
   // com

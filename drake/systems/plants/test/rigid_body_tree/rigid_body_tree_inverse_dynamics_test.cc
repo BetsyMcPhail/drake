@@ -114,7 +114,7 @@ TEST_F(RigidBodyTreeInverseDynamicsTest, TestSkewSymmetryProperty) {
     kinematics_cache_coriolis.initialize(q.cast<Scalar>(), qd_arg);
     tree_rpy_->doKinematics(kinematics_cache_coriolis, true);
 
-    const RigidBodyTree::BodyToWrenchMap<Scalar> no_external_wrenches;
+    RigidBodyTree::BodyToWrenchMap<Scalar> no_external_wrenches;
     auto coriolis_term = tree_rpy_->inverseDynamics(
         kinematics_cache_coriolis, no_external_wrenches,
         qdd.cast<Scalar>().eval(), true);
@@ -163,7 +163,7 @@ TEST_F(RigidBodyTreeInverseDynamicsTest, TestAccelerationJacobianIsMassMatrix) {
       KinematicsCache<Scalar> kinematics_cache_2(tree->bodies);
       kinematics_cache_2.initialize(q.cast<Scalar>(), v.cast<Scalar>());
       tree->doKinematics(kinematics_cache_2, true);
-      const RigidBodyTree::BodyToWrenchMap<Scalar> no_external_wrenches;
+      RigidBodyTree::BodyToWrenchMap<Scalar> no_external_wrenches;
       return tree->inverseDynamics(kinematics_cache_2, no_external_wrenches,
                                    vd_arg);
     };
@@ -200,7 +200,7 @@ TEST_F(RigidBodyTreeInverseDynamicsTest, TestGeneralizedGravitationalForces) {
   KinematicsCache<double> kinematics_cache(tree->bodies);
   kinematics_cache.initialize(q);
   tree->doKinematics(kinematics_cache);
-  const RigidBodyTree::BodyToWrenchMap<double> no_external_wrenches;
+  RigidBodyTree::BodyToWrenchMap<double> no_external_wrenches;
   auto gravitational_forces =
       tree->dynamicsBiasTerm(kinematics_cache, no_external_wrenches, false);
 
