@@ -63,7 +63,7 @@ class MobyLCPSolver : public MathematicalProgramSolverInterface {
   mutable std::ofstream null_stream_;
 
   // TODO(sammy-tri) why is this a member variable?
-  mutable unsigned pivots_;
+  mutable int pivots_;
 
   // NOTE:  The temporaries below are stored in the class to minimize
   // allocations; all are marked 'mutable' as they do not affect the
