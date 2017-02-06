@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(drake-superbuild VERSION 0.0.0)
+project(Drake VERSION 0.0.0)
 
 include(CTest)
 

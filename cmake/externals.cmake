@@ -231,7 +231,9 @@ macro(drake_add_cmake_external PROJECT)
     CMAKE_ARGS
       ${_ext_VERBOSE}
       ${_ext_PROPAGATE_CACHE}
-      ${_ext_CMAKE_ARGS})
+      ${_ext_CMAKE_ARGS}
+    CMAKE_CACHE_ARGS
+      -DCMAKE_DIRECTORY_LABELS:string=${PROJECT})
 
   if(_ext_TEST)
     file(APPEND ${CMAKE_BINARY_DIR}/CTestExternals.cmake
@@ -338,7 +340,9 @@ macro(drake_add_foreign_external PROJECT)
     STEP_TARGETS configure build install
     INDEPENDENT_STEP_TARGETS update
     BUILD_ALWAYS ${_ext_BUILD_ALWAYS}
-    DEPENDS ${_ext_deps})
+    DEPENDS ${_ext_deps}
+    CMAKE_CACHE_ARGS
+      -DDIRECTORY_LABELS:string="${PROJECT}")
 endmacro()
 
 #------------------------------------------------------------------------------
@@ -523,6 +527,9 @@ function(drake_add_external PROJECT)
   else()
     drake_add_foreign_external(${PROJECT})
   endif()
+
+  file(APPEND ${CMAKE_BINARY_DIR}/CTestSubprojects.cmake
+      "ctest_add_subproject(${PROJECT} LABELS ${PROJECT})\n")
 
   if(NOT _ext_LOCAL)
     # Set up build step to ensure project is updated before build

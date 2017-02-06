@@ -284,6 +284,7 @@ macro(drake_setup_superbuild)
   set_property(DIRECTORY PROPERTY TEST_INCLUDE_FILE
     ${CMAKE_BINARY_DIR}/CTestExternals.cmake)
   file(REMOVE ${CMAKE_BINARY_DIR}/CTestExternals.cmake)
+  file(REMOVE ${CMAKE_BINARY_DIR}/CTestSubprojects.cmake)
 
   # Set default install prefix
   if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
