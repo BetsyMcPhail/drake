@@ -49,6 +49,11 @@ drake_py_unittest(
         ":geometry_inspector",
         "//multibody/benchmarks/acrobot:models",
     ],
+    # Tcl/Tk errors under DRD and Helgrind.
+    tags = [
+        "no_drd",
+        "no_helgrind",
+    ],
 )
 
 drake_cc_library(

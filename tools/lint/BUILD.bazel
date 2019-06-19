@@ -109,6 +109,11 @@ drake_py_binary(
 drake_py_unittest(
     name = "buildifier_test",
     data = [":buildifier"],
+    # Test fails under DRD and Helgrind.
+    tags = [
+        "no_drd",
+        "no_helgrind",
+    ],
 )
 
 drake_py_unittest(
@@ -142,6 +147,11 @@ sh_test(
     srcs = ["test/clang_format_includes_test.sh"],
     data = [
         ":clang-format-includes",
+    ],
+    # Test fails under DRD and Helgrind.
+    tags = [
+        "no_drd",
+        "no_helgrind",
     ],
 )
 

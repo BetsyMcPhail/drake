@@ -18,6 +18,7 @@ load(
     "drake_py_unittest",
 )
 load("//bindings/pydrake:pydrake.bzl", "add_lint_tests_pydrake")
+load("//tools/skylark:test_tags.bzl", "vtk_test_tags")
 
 package(default_visibility = [
     "//bindings/pydrake:__subpackages__",
@@ -334,6 +335,11 @@ drake_py_binary(
         "//examples/multibody/cart_pole:cart_pole.sdf",
     ],
     test_rule_timeout = "moderate",
+    # Test fails under DRD and Helgrind.
+    tags = [
+        "no_drd",
+        "no_helgrind",
+    ],
     deps = [
         ":drawing_py",
         ":framework_py",
@@ -413,6 +419,11 @@ drake_py_unittest(
         "//manipulation/models/iiwa_description:models",
         "//systems/sensors:test_models",
     ],
+    # Defects related to ZMQ under DRD and Helgrind.
+    tags = [
+        "no_drd",
+        "no_helgrind",
+    ],
     deps = [
         ":analysis_py",
         ":framework_py",
@@ -457,6 +468,7 @@ drake_py_unittest(
     data = [
         "//systems/sensors:test_models",
     ],
+    tags = vtk_test_tags(),
     deps = [":sensors_py"],
 )
 

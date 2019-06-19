@@ -715,6 +715,11 @@ sh_test(
         "//tools/cc_toolchain:capture_cc.env",
         "//tools/cc_toolchain:toolchain_deps",
     ],
+    # Test fails under DRD and Helgrind.
+    tags = [
+        "no_drd",
+        "no_helgrind",
+    ],
 )
 
 # TODO(eric.cousineau): Remove this alias and update `issue_template.md` to
@@ -1266,6 +1271,11 @@ drake_py_unittest(
         "test/resource_tool_test_data.txt",
         ":resource_tool",
         "//examples/pendulum:models",
+    ],
+    # Test fails under DRD and Helgrind.
+    tags = [
+        "no_drd",
+        "no_helgrind",
     ],
 )
 

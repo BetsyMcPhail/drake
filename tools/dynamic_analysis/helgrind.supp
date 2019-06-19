@@ -1,0 +1,26 @@
+{
+   Possible data race during read/write by thread in libzmq.so.*
+   Helgrind:Race
+   ...
+   obj:/usr/lib/x86_64-linux-gnu/libzmq.so.*
+   ...
+}
+
+{
+   pthread_mutex_destroy of a locked mutex in libmosek64.so.*
+   Helgrind:Misc
+   ...
+   fun:lc_free_job
+   fun:MSK_provmqpch
+   fun:MSK_deleteenv
+   ...
+}
+
+{
+   Thread unlocked a not-locked lock in libmosek64.so.*
+   Helgrind:UnlockUnlocked
+   ...
+   fun:lc_checkout
+   fun:MSK_checkoutlicense
+   ...
+}

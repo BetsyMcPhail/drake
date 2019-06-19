@@ -75,6 +75,11 @@ install_test(
         ":install",
         _INSTALL_TEST_COMMANDS,
     ],
+    # Test fails under DRD and Helgrind.
+    tags = [
+        "no_drd",
+        "no_helgrind",
+    ],
 )
 
 add_lint_tests()

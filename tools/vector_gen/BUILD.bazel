@@ -90,6 +90,11 @@ sh_test(
         "test/goal/sample.h",
         "test/lcmt_sample_t.lcm",
     ],
+    # Test fails under DRD and Helgrind.
+    tags = [
+        "no_drd",
+        "no_helgrind",
+    ],
 )
 
 add_lint_tests()

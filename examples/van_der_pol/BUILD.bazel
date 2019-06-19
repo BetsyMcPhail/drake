@@ -33,6 +33,11 @@ drake_py_binary(
     name = "plot_limit_cycle",
     srcs = ["plot_limit_cycle.py"],
     add_test_rule = 1,
+    # Defects related to matplotlib under DRD and Helgrind.
+    tags = [
+        "no_drd",
+        "no_helgrind",
+    ],
     deps = [
         "//bindings/pydrake",
     ],

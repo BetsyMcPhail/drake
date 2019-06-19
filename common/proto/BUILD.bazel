@@ -168,6 +168,11 @@ drake_py_unittest(
     flaky = 1,
     # We wish to access neighboring files.
     isolate = 0,
+    # Test fails under DRD and Helgrind.
+    tags = [
+        "no_drd",
+        "no_helgrind",
+    ],
 )
 
 drake_cc_googletest(

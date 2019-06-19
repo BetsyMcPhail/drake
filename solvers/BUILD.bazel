@@ -1076,6 +1076,8 @@ drake_cc_googletest(
         # in the test. So we disable memcheck for this test. See
         # http://valgrind.org/docs/manual/manual-core.html#manual-core.limits
         # for more information.
+        "no_drd",
+        "no_helgrind",
         "no_memcheck",
     ],
     deps = [

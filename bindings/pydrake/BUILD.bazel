@@ -441,6 +441,11 @@ drake_py_binary(
     srcs = ["math_example.py"],
     add_test_rule = 1,
     isolate = 1,
+    # Defects related to matplotlib under DRD and Helgrind.
+    tags = [
+        "no_drd",
+        "no_helgrind",
+    ],
     deps = [
         ":math_py",
     ],
