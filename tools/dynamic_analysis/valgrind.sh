@@ -7,7 +7,7 @@ export GTEST_DEATH_TEST_USE_FORK=1
 
 valgrind \
     --leak-check=full \
-    --suppressions="$mydir/valgrind.supp" \
+    --suppressions="/home/betsy/drake-distro/drake/tools/dynamic_analysis/valgrind.supp" \
     --error-exitcode=1 \
     --trace-children=yes \
     --track-origins=yes \

@@ -96,7 +96,7 @@
    match-leak-kinds: possible
    fun:malloc
    fun:mkl_serv_allocate
-   fun:mkl_blas_avx2_xdtrsm_v1
+   fun:mkl_blas<insert_a_suppression_name_here>_avx2_xdtrsm_v1
    fun:mkl_blas_avx2_xdtrsm
    fun:DTRSM
    fun:cblas_dtrsm
@@ -464,4 +464,994 @@
    fun:dmumps_f77_
    fun:dmumps_c
    fun:_ZN5Ipopt20MumpsSolverInterfaceC1Ev
+}
+
+#
+# This is a valgrind suppression file that should be used when using valgrind.
+#
+#  Here's an example of running valgrind:
+#
+#	cd python/dist/src
+#	valgrind --tool=memcheck --suppressions=Misc/valgrind-python.supp \
+#		./python -E -tt ./Lib/test/regrtest.py -u bsddb,network
+#
+# You must edit Objects/obmalloc.c and uncomment Py_USING_MEMORY_DEBUGGER
+# to use the preferred suppressions with Py_ADDRESS_IN_RANGE.
+#
+# If you do not want to recompile Python, you can uncomment
+# suppressions for PyObject_Free and PyObject_Realloc.
+#
+# See Misc/README.valgrind for more information.
+
+# all tool names: Addrcheck,Memcheck,cachegrind,helgrind,massif
+{
+   ADDRESS_IN_RANGE/Invalid read of size 4
+   Memcheck:Addr4
+   fun:Py_ADDRESS_IN_RANGE
+}
+
+{
+   ADDRESS_IN_RANGE/Invalid read of size 4
+   Memcheck:Value4
+   fun:Py_ADDRESS_IN_RANGE
+}
+
+{
+   ADDRESS_IN_RANGE/Invalid read of size 8 (x86_64 aka amd64)
+   Memcheck:Value8
+   fun:Py_ADDRESS_IN_RANGE
+}
+
+{
+   ADDRESS_IN_RANGE/Conditional jump or move depends on uninitialised value
+   Memcheck:Cond
+   fun:Py_ADDRESS_IN_RANGE
+}
+
+#
+# Leaks (including possible leaks)
+#    Hmmm, I wonder if this masks some real leaks.  I think it does.
+#    Will need to fix that.
+#
+
+{
+   Suppress leaking the GIL.  Happens once per process, see comment in ceval.c.
+   Memcheck:Leak
+   fun:malloc
+   fun:PyThread_allocate_lock
+   fun:PyEval_InitThreads
+}
+
+{
+   Suppress leaking the GIL after a fork.
+   Memcheck:Leak
+   fun:malloc
+   fun:PyThread_allocate_lock
+   fun:PyEval_ReInitThreads
+}
+
+{
+   Suppress leaking the autoTLSkey.  This looks like it shouldn't leak though.
+   Memcheck:Leak
+   fun:malloc
+   fun:PyThread_create_key
+   fun:_PyGILState_Init
+   fun:Py_InitializeEx
+   fun:Py_Main
+}
+
+{
+   Hmmm, is this a real leak or like the GIL?
+   Memcheck:Leak
+   fun:malloc
+   fun:PyThread_ReInitTLS
+}
+
+{
+   Handle PyMalloc confusing valgrind (possibly leaked)
+   Memcheck:Leak
+   fun:realloc
+   fun:_PyObject_GC_Resize
+   fun:COMMENT_THIS_LINE_TO_DISABLE_LEAK_WARNING
+}
+
+{
+   Handle PyMalloc confusing valgrind (possibly leaked)
+   Memcheck:Leak
+   fun:malloc
+   fun:_PyObject_GC_New
+   fun:COMMENT_THIS_LINE_TO_DISABLE_LEAK_WARNING
+}
+
+{
+   Handle PyMalloc confusing valgrind (possibly leaked)
+   Memcheck:Leak
+   fun:malloc
+   fun:_PyObject_GC_NewVar
+   fun:COMMENT_THIS_LINE_TO_DISABLE_LEAK_WARNING
+}
+
+#
+# Non-python specific leaks
+#
+
+{
+   Handle pthread issue (possibly leaked)
+   Memcheck:Leak
+   fun:calloc
+   fun:allocate_dtv
+   fun:_dl_allocate_tls_storage
+   fun:_dl_allocate_tls
+}
+
+{
+   Handle pthread issue (possibly leaked)
+   Memcheck:Leak
+   fun:memalign
+   fun:_dl_allocate_tls_storage
+   fun:_dl_allocate_tls
+}
+
+{
+   ADDRESS_IN_RANGE/Invalid read of size 4
+   Memcheck:Addr4
+   fun:PyObject_Free
+}
+
+{
+   ADDRESS_IN_RANGE/Invalid read of size 4
+   Memcheck:Value4
+   fun:PyObject_Free
+}
+
+{
+   ADDRESS_IN_RANGE/Use of uninitialised value of size 8
+   Memcheck:Addr8
+   fun:PyObject_Free
+}
+
+{
+   ADDRESS_IN_RANGE/Use of uninitialised value of size 8
+   Memcheck:Value8
+   fun:PyObject_Free
+}
+
+{
+   ADDRESS_IN_RANGE/Conditional jump or move depends on uninitialised value
+   Memcheck:Cond
+   fun:PyObject_Free
+}
+
+{
+   ADDRESS_IN_RANGE/Invalid read of size 4
+   Memcheck:Addr4
+   fun:PyObject_Realloc
+}
+
+{
+   ADDRESS_IN_RANGE/Invalid read of size 4
+   Memcheck:Value4
+   fun:PyObject_Realloc
+}
+
+{
+   ADDRESS_IN_RANGE/Use of uninitialised value of size 8
+   Memcheck:Addr8
+   fun:PyObject_Realloc
+}
+
+{
+   ADDRESS_IN_RANGE/Use of uninitialised value of size 8
+   Memcheck:Value8
+   fun:PyObject_Realloc
+}
+
+{
+   ADDRESS_IN_RANGE/Conditional jump or move depends on uninitialised value
+   Memcheck:Cond
+   fun:PyObject_Realloc
+}
+
+###
+### All the suppressions below are for errors that occur within libraries
+### that Python uses.  The problems to not appear to be related to Python's
+### use of the libraries.
+###
+
+{
+   Generic ubuntu ld problems
+   Memcheck:Addr8
+   obj:/lib/ld-2.4.so
+   obj:/lib/ld-2.4.so
+   obj:/lib/ld-2.4.so
+   obj:/lib/ld-2.4.so
+}
+
+{
+   Generic gentoo ld problems
+   Memcheck:Cond
+   obj:/lib/ld-2.3.4.so
+   obj:/lib/ld-2.3.4.so
+   obj:/lib/ld-2.3.4.so
+   obj:/lib/ld-2.3.4.so
+}
+
+{
+   DBM problems, see test_dbm
+   Memcheck:Param
+   write(buf)
+   fun:write
+   obj:/usr/lib/libdb1.so.2
+   obj:/usr/lib/libdb1.so.2
+   obj:/usr/lib/libdb1.so.2
+   obj:/usr/lib/libdb1.so.2
+   fun:dbm_close
+}
+
+{
+   DBM problems, see test_dbm
+   Memcheck:Value8
+   fun:memmove
+   obj:/usr/lib/libdb1.so.2
+   obj:/usr/lib/libdb1.so.2
+   obj:/usr/lib/libdb1.so.2
+   obj:/usr/lib/libdb1.so.2
+   fun:dbm_store
+   fun:dbm_ass_sub
+}
+
+{
+   DBM problems, see test_dbm
+   Memcheck:Cond
+   obj:/usr/lib/libdb1.so.2
+   obj:/usr/lib/libdb1.so.2
+   obj:/usr/lib/libdb1.so.2
+   fun:dbm_store
+   fun:dbm_ass_sub
+}
+
+{
+   DBM problems, see test_dbm
+   Memcheck:Cond
+   fun:memmove
+   obj:/usr/lib/libdb1.so.2
+   obj:/usr/lib/libdb1.so.2
+   obj:/usr/lib/libdb1.so.2
+   obj:/usr/lib/libdb1.so.2
+   fun:dbm_store
+   fun:dbm_ass_sub
+}
+
+{
+   GDBM problems, see test_gdbm
+   Memcheck:Param
+   write(buf)
+   fun:write
+   fun:gdbm_open
+
+}
+
+{
+   ZLIB problems, see test_gzip
+   Memcheck:Cond
+   obj:/lib/libz.so.1.2.3
+   obj:/lib/libz.so.1.2.3
+   fun:deflate
+}
+
+{
+   Avoid problems w/readline doing a putenv and leaking on exit
+   Memcheck:Leak
+   fun:malloc
+   fun:xmalloc
+   fun:sh_set_lines_and_columns
+   fun:_rl_get_screen_size
+   fun:_rl_init_terminal_io
+   obj:/lib/libreadline.so.4.3
+   fun:rl_initialize
+}
+
+###
+### These occur from somewhere within the SSL, when running
+###  test_socket_sll.  They are too general to leave on by default.
+###
+###{
+###   somewhere in SSL stuff
+###   Memcheck:Cond
+###   fun:memset
+###}
+###{
+###   somewhere in SSL stuff
+###   Memcheck:Value4
+###   fun:memset
+###}
+###
+###{
+###   somewhere in SSL stuff
+###   Memcheck:Cond
+###   fun:MD5_Update
+###}
+###
+###{
+###   somewhere in SSL stuff
+###   Memcheck:Value4
+###   fun:MD5_Update
+###}
+
+#
+# All of these problems come from using test_socket_ssl
+#
+{
+   from test_socket_ssl
+   Memcheck:Cond
+   fun:BN_bin2bn
+}
+
+{
+   from test_socket_ssl
+   Memcheck:Cond
+   fun:BN_num_bits_word
+}
+
+{
+   from test_socket_ssl
+   Memcheck:Value4
+   fun:BN_num_bits_word
+}
+
+{
+   from test_socket_ssl
+   Memcheck:Cond
+   fun:BN_mod_exp_mont_word
+}
+
+{
+   from test_socket_ssl
+   Memcheck:Cond
+   fun:BN_mod_exp_mont
+}
+
+{
+   from test_socket_ssl
+   Memcheck:Param
+   write(buf)
+   fun:write
+   obj:/usr/lib/libcrypto.so.0.9.7
+}
+
+{
+   from test_socket_ssl
+   Memcheck:Cond
+   fun:RSA_verify
+}
+
+{
+   from test_socket_ssl
+   Memcheck:Value4
+   fun:RSA_verify
+}
+
+{
+   from test_socket_ssl
+   Memcheck:Value4
+   fun:DES_set_key_unchecked
+}
+
+{
+   from test_socket_ssl
+   Memcheck:Value4
+   fun:DES_encrypt2
+}
+
+{
+   from test_socket_ssl
+   Memcheck:Cond
+   obj:/usr/lib/libssl.so.0.9.7
+}
+
+{
+   from test_socket_ssl
+   Memcheck:Value4
+   obj:/usr/lib/libssl.so.0.9.7
+}
+
+{
+   from test_socket_ssl
+   Memcheck:Cond
+   fun:BUF_MEM_grow_clean
+}
+
+{
+   from test_socket_ssl
+   Memcheck:Cond
+   fun:memcpy
+   fun:ssl3_read_bytes
+}
+
+{
+   from test_socket_ssl
+   Memcheck:Cond
+   fun:SHA1_Update
+}
+
+{
+   from test_socket_ssl
+   Memcheck:Value4
+   fun:SHA1_Update
+}
+
+{
+   builtin_map
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   ...
+   fun:builtin_map
+}
+
+{
+   call_function
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   ...
+   fun:call_function
+}
+
+{
+   compiler_call
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   ...
+   fun:compiler_call
+}
+
+{
+  compiler_class
+   Memcheck:Leak
+   match-leak-kinds: possible
+   ...
+   fun:compiler_class
+}
+
+{
+   compiler_function
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   ...
+   fun:compiler_function
+}
+
+{
+   compiler_visit_stmt
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   ...
+   fun:compiler_visit_stmt
+}
+
+{
+   ext_do_call
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   ...
+   fun:ext_do_call
+}
+
+{
+   fast_function
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   ...
+   fun:fast_function
+}
+
+{
+   import_submodule
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   ...
+   fun:import_submodule
+}
+
+{
+   load_module
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   ...
+   fun:load_module
+}
+
+{
+   load_source_module
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   ...
+   fun:load_source_module
+}
+
+{
+   main
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   ...
+   fun:main
+}
+
+{
+   PyErr_PrintEx
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   ...
+   fun:PyErr_PrintEx
+}
+
+{
+   PyObject_Call
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   ...
+   fun:_PyObject_GenericSetAttrWithDict
+   fun:PyObject_GenericSetAttr
+   fun:PyObject_SetAttr
+   fun:PyEval_EvalFrameEx
+   fun:PyEval_EvalCodeEx
+   fun:function_call
+   fun:PyObject_Call
+   fun:instancemethod_call
+   fun:PyObject_Call
+   fun:slot_tp_init
+   fun:type_call
+   fun:PyObject_Call
+}
+
+{
+   PyEval_CallObjectWithKeywords
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:_PyObject_GC_Malloc
+   fun:_PyObject_GC_NewVar
+   fun:PyTuple_New
+   fun:objargs_mktuple
+   fun:PyObject_CallFunctionObjArgs
+   fun:PyObject_IsSubclass
+   fun:PyErr_GivenExceptionMatches
+   fun:PyErr_ExceptionMatches
+   fun:ensure_fromlist
+   fun:import_module_level
+   fun:PyImport_ImportModuleLevel
+   fun:builtin___import__
+   fun:PyCFunction_Call
+   fun:PyObject_Call
+   fun:PyEval_CallObjectWithKeywords
+}
+
+{
+   PyEval_EvalFrameEx
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:realloc
+   fun:_PyObject_GC_Resize
+   fun:PyFrame_New
+   fun:fast_function
+   fun:call_function
+   fun:PyEval_EvalFrameEx
+   fun:fast_function
+   fun:call_function
+   fun:PyEval_EvalFrameEx
+   fun:fast_function
+   fun:call_function
+   fun:PyEval_EvalFrameEx
+   fun:PyEval_EvalCodeEx
+   fun:fast_function
+   fun:call_function
+   fun:PyEval_EvalFrameEx
+}
+
+{
+  PyImport_ExecCodeModuleEx
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:_PyObject_GC_Malloc
+   fun:_PyObject_GC_NewVar
+   fun:PyFrame_New
+   fun:PyEval_EvalCodeEx
+   fun:function_call
+   fun:PyObject_Call
+   fun:slot_tp_new
+   fun:type_call
+   fun:PyObject_Call
+   fun:PyObject_CallFunctionObjArgs
+   fun:build_class
+   fun:PyEval_EvalFrameEx
+   fun:PyEval_EvalCodeEx
+   fun:PyEval_EvalCode
+   fun:PyImport_ExecCodeModuleEx
+}
+
+{
+   _PyCodecInfo_GetIncrementalDecoder
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:_PyObject_GC_Malloc
+   fun:_PyObject_GC_NewVar
+   fun:PyFrame_New
+   fun:PyEval_EvalCodeEx
+   fun:function_call
+   fun:PyObject_Call
+   fun:instancemethod_call
+   fun:PyObject_Call
+   fun:slot_tp_init
+   fun:type_call
+   fun:PyObject_Call
+   fun:call_function_tail
+   fun:PyObject_CallFunction
+   fun:codec_makeincrementalcodec
+   fun:_PyCodecInfo_GetIncrementalDecoder
+}
+
+{
+   function_call
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:_PyObject_GC_Malloc
+   fun:_PyObject_GC_NewVar
+   fun:PyFrame_New
+   fun:PyEval_EvalCodeEx
+   fun:function_call
+   fun:PyObject_Call
+   fun:instancemethod_call
+   fun:PyObject_Call
+   fun:PyObject_CallFunctionObjArgs
+   fun:PyEval_EvalFrameEx
+   fun:gen_send_ex
+   fun:gen_iternext
+   fun:PyEval_EvalFrameEx
+   fun:PyEval_EvalCodeEx
+   fun:function_call
+}
+
+{
+   PyEval_EvalCodeEx
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:_PyObject_GC_Malloc
+   fun:_PyObject_GC_NewVar
+   fun:PyTuple_New
+   fun:PyTuple_Pack
+   fun:_PyCode_ConstantKey
+   fun:compiler_add_o
+   fun:compiler_addop_o
+   fun:assemble
+   fun:compiler_mod
+   fun:PyAST_Compile
+   fun:run_mod
+   fun:PyRun_StringFlags
+   fun:exec_statement
+   fun:PyEval_EvalFrameEx
+   fun:PyEval_EvalCodeEx
+}
+
+{
+   Py_Initialize
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:_PyObject_GC_Malloc
+   fun:_PyObject_GC_NewVar
+   fun:PyTuple_New
+   fun:PyList_AsTuple
+   fun:PySequence_Tuple
+   fun:mro_internal
+   fun:PyType_Ready
+   fun:_PyObject_GenericGetAttrWithDict
+   fun:PyObject_GenericGetAttr
+   fun:PyObject_GetAttr
+   fun:PyImport_Import
+   fun:PyImport_ImportModule
+   fun:_PyExc_Init
+   fun:Py_InitializeEx
+   fun:Py_Initialize
+}
+
+{
+   call_function_tail
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:_PyObject_GC_Malloc
+   fun:_PyObject_GC_NewVar
+   fun:PyTuple_New
+   fun:objargs_mktuple
+   fun:PyObject_CallFunctionObjArgs
+   fun:PyObject_IsSubclass
+   fun:PyErr_GivenExceptionMatches
+   fun:PyErr_ExceptionMatches
+   fun:ensure_fromlist
+   fun:import_module_level
+   fun:PyImport_ImportModuleLevel
+   fun:builtin___import__
+   fun:PyCFunction_Call
+   fun:PyObject_Call
+   fun:call_function_tail
+}
+
+{
+   slot_tp_init
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:_PyObject_GC_Malloc
+   fun:_PyObject_GC_NewVar
+   fun:PyTuple_New
+   fun:objargs_mktuple
+   fun:PyObject_CallFunctionObjArgs
+   fun:PyObject_IsSubclass
+   fun:PyErr_GivenExceptionMatches
+   fun:cmp_outcome
+   fun:PyEval_EvalFrameEx
+   fun:PyEval_EvalCodeEx
+   fun:function_call
+   fun:PyObject_Call
+   fun:instancemethod_call
+   fun:PyObject_Call
+   fun:slot_tp_init
+}
+
+{
+  PyObject_Call
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:_PyObject_GC_Malloc
+   fun:_PyObject_GC_NewVar
+   fun:PyTuple_New
+   fun:objargs_mktuple
+   fun:PyObject_CallFunctionObjArgs
+   fun:PyObject_IsSubclass
+   fun:PyErr_GivenExceptionMatches
+   fun:PyErr_ExceptionMatches
+   fun:iter_iternext
+   fun:PyIter_Next
+   fun:set_update_internal
+   fun:make_new_set
+   fun:frozenset_new
+   fun:type_call
+   fun:PyObject_Call
+}
+
+{
+   1
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:_PyObject_GC_Malloc
+   fun:_PyObject_GC_NewVar
+   fun:PyFrame_New
+   fun:PyEval_EvalCodeEx
+   fun:function_call
+   fun:PyObject_Call
+   fun:instancemethod_call
+   fun:PyObject_Call
+   fun:slot_tp_iter
+   fun:PyObject_GetIter
+   fun:PyEval_EvalFrameEx
+   fun:PyEval_EvalCodeEx
+   fun:function_call
+   fun:PyObject_Call
+   fun:instancemethod_call
+}
+
+{
+   2
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:_PyObject_GC_Malloc
+   fun:_PyObject_GC_NewVar
+   fun:PyFrame_New
+   fun:PyEval_EvalCodeEx
+   fun:function_call
+   fun:PyObject_Call
+   fun:instancemethod_call
+   fun:PyObject_Call
+   fun:PyObject_CallMethodObjArgs
+   fun:_PyIncrementalNewlineDecoder_decode
+   fun:textiowrapper_read_chunk
+   fun:_textiowrapper_readline
+   fun:textiowrapper_iternext
+   fun:listextend
+   fun:PyCFunction_Call
+}
+
+{
+   3
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:_PyObject_GC_Malloc
+   fun:_PyObject_GC_NewVar
+   fun:PyTuple_New
+   fun:PyTuple_Pack
+   fun:slot_sq_contains
+   fun:PySequence_Contains
+   fun:cmp_outcome
+   fun:PyEval_EvalFrameEx
+   fun:PyEval_EvalCodeEx
+   fun:function_call
+   fun:PyObject_Call
+   fun:instancemethod_call
+   fun:PyObject_Call
+   fun:PyObject_CallFunctionObjArgs
+   fun:PyObject_IsSubclass
+}
+
+{
+   4
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:_PyObject_GC_Malloc
+   fun:_PyObject_GC_NewVar
+   fun:PyFrame_New
+   fun:PyEval_EvalCodeEx
+   fun:function_call
+   fun:PyObject_Call
+   fun:instancemethod_call
+   fun:PyObject_Call
+   fun:slot_sq_contains
+   fun:PySequence_Contains
+   fun:cmp_outcome
+   fun:PyEval_EvalFrameEx
+   fun:PyEval_EvalCodeEx
+   fun:function_call
+   fun:PyObject_Call
+}
+
+{
+   5
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:_PyObject_GC_Malloc
+   fun:_PyObject_GC_NewVar
+   fun:PyFrame_New
+   fun:PyEval_EvalCodeEx
+   fun:function_call
+   fun:PyObject_Call
+   fun:instancemethod_call
+   fun:PyObject_Call
+   fun:slot_tp_init
+   fun:type_call
+   fun:PyObject_Call
+   fun:call_function_tail
+   fun:PyObject_CallFunction
+   fun:warn_explicit
+   fun:do_warn
+}
+
+{
+  6
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:_PyObject_GC_Malloc
+   fun:_PyObject_GC_NewVar
+   fun:PyFrame_New
+   fun:PyEval_EvalCodeEx
+   fun:function_call
+   fun:PyObject_Call
+   fun:instancemethod_call
+   fun:PyObject_Call
+   fun:slot_tp_init
+   fun:type_call
+   fun:PyObject_Call
+   fun:PyObject_CallFunctionObjArgs
+   fun:build_class
+   fun:PyEval_EvalFrameEx
+   fun:PyEval_EvalCodeEx
+}
+
+{
+   7
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:_PyObject_GC_Malloc
+   fun:_PyObject_GC_NewVar
+   fun:PyFrame_New
+   fun:PyEval_EvalCodeEx
+   fun:function_call
+   fun:PyObject_Call
+   fun:PyObject_CallFunctionObjArgs
+   fun:slot_tp_descr_get
+   fun:_PyObject_GenericGetAttrWithDict
+   fun:PyObject_GenericGetAttr
+   fun:PyObject_GetAttr
+   fun:PyEval_EvalFrameEx
+   fun:PyEval_EvalCodeEx
+   fun:PyEval_EvalCode
+   fun:PyImport_ExecCodeModuleEx
+}
+
+{
+   8
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:_PyObject_GC_Malloc
+   fun:_PyObject_GC_NewVar
+   fun:PyFrame_New
+   fun:PyEval_EvalCodeEx
+   fun:function_call
+   fun:PyObject_Call
+   fun:instancemethod_call
+   fun:PyObject_Call
+   fun:slot_tp_iter
+   fun:PyObject_GetIter
+   fun:PyEval_EvalFrameEx
+   fun:PyEval_EvalCodeEx
+   fun:function_call
+   fun:PyObject_Call
+   fun:instancemethod_call
+}
+
+{
+   9
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:_PyObject_GC_Malloc
+   fun:_PyObject_GC_NewVar
+   fun:PyFrame_New
+   fun:PyEval_EvalCodeEx
+   fun:function_call
+   fun:PyObject_Call
+   fun:instancemethod_call
+   fun:PyObject_Call
+   fun:PyObject_CallMethodObjArgs
+   fun:_PyIncrementalNewlineDecoder_decode
+   fun:textiowrapper_read_chunk
+   fun:_textiowrapper_readline
+   fun:textiowrapper_iternext
+   fun:listextend
+   fun:PyCFunction_Call
+}
+
+{
+   10
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:_PyObject_GC_Malloc
+   fun:_PyObject_GC_NewVar
+   fun:PyFrame_New
+   fun:PyEval_EvalCodeEx
+   fun:function_call
+   fun:PyObject_Call
+   fun:PyObject_CallFunctionObjArgs
+   fun:handle_callback
+   fun:PyObject_ClearWeakRefs
+   fun:class_dealloc
+   fun:_Py_Dealloc
+   fun:tupledealloc
+   fun:_Py_Dealloc
+   fun:class_dealloc
+   fun:_Py_Dealloc
 }

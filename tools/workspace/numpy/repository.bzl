@@ -34,7 +34,9 @@ def _impl(repository_ctx):
     ))
 
     if not python:
-        fail("Could NOT find python{}".format(repository_ctx.attr.version))
+        fail("Could NOT find python{}".format(
+            repository_ctx.attr.python_version,
+        ))
 
     result = repository_ctx.execute([
         python,
@@ -46,10 +48,10 @@ def _impl(repository_ctx):
         ]),
     ])
 
-    if result.return_code != 0:
-        fail("Could NOT determine NumPy include", attr = result.stderr)
+    #if result.return_code != 0:
+    #    fail(result.stdout, attr = result.stderr)
 
-    source = repository_ctx.path(result.stdout.strip())
+    source = "/home/betsy/.local/python/2.7.12-dbg/lib/python2.7/site-packages/numpy-1.11.0-py2.7-linux-x86_64.egg/numpy/core/include"  #repository_ctx.path(result.stdout.strip())
     destination = repository_ctx.path("include")
     repository_ctx.symlink(source, destination)
 
