@@ -1,0 +1,24 @@
+# -*- python -*-
+
+load("@drake//tools/skylark:py.bzl", "py_library")
+
+licenses = ["notice"],  # Apache-2.0
+
+package(
+    default_visibility = ["//visibility:public"],
+)
+
+py_library(
+    name = "itkwidgets",
+    srcs = [
+        "itkwidgets/__init__.py",
+        "itkwidgets/_transform_types.py",
+        "itkwidgets/_version.py",
+        "itkwidgets/cm.py",
+        "itkwidgets/trait_types.py",
+        "itkwidgets/widget_checkerboard.py",
+        "itkwidgets/widget_compare.py",
+        "itkwidgets/widget_line_profiler.py",
+        "itkwidgets/widget_viewer.py",
+    ],
+)
