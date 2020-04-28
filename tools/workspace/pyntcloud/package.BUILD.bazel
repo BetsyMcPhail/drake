@@ -1,0 +1,19 @@
+# -*- python -*-
+
+load("@drake//tools/skylark:py.bzl", "py_library")
+
+licenses = ["notice"],  # MIT
+
+package(
+    default_visibility = ["//visibility:public"],
+)
+
+py_library(
+    name = "pyntcloud",
+    srcs = glob([
+        "pyntcloud/**",
+    ]) or fail("No match"),
+    imports = [
+        "pyntcloud",
+    ],
+)

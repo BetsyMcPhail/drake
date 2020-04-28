@@ -2,7 +2,7 @@
 
 load("@drake//tools/skylark:py.bzl", "py_library")
 
-licenses = ["notice"],  # Apache-2.0
+licenses = ["notice"]  # Apache-2.0
 
 package(
     default_visibility = ["//visibility:public"],
@@ -20,5 +20,5 @@ py_library(
         "itkwidgets/widget_compare.py",
         "itkwidgets/widget_line_profiler.py",
         "itkwidgets/widget_viewer.py",
-    ],
+    ]
 )

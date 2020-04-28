@@ -64,6 +64,7 @@ load("@drake//tools/workspace/picosat:repository.bzl", "picosat_repository")
 load("@drake//tools/workspace/pybind11:repository.bzl", "pybind11_repository")
 load("@drake//tools/workspace/pycodestyle:repository.bzl", "pycodestyle_repository")  # noqa
 load("@drake//tools/workspace/pycps:repository.bzl", "pycps_repository")
+load("@drake//tools/workspace/pyntcloud:repository.bzl", "pyntcloud_repository")
 load("@drake//tools/workspace/python:repository.bzl", "python_repository")
 load("@drake//tools/workspace/qdldl:repository.bzl", "qdldl_repository")
 load("@drake//tools/workspace/ros_xacro:repository.bzl", "ros_xacro_repository")  # noqa
@@ -162,6 +163,8 @@ def add_default_repositories(excludes = [], mirrors = DEFAULT_MIRRORS):
         ibex_repository(name = "ibex")
     if "ignition_math" not in excludes:
         ignition_math_repository(name = "ignition_math", mirrors = mirrors)
+    if "itkwidgets" not in excludes:
+        itkwidgets_repository(name = "itkwidgets", mirrors = mirrors)
     if "ipopt" not in excludes:
         ipopt_repository(name = "ipopt")
     if "json" not in excludes:
@@ -222,6 +225,8 @@ def add_default_repositories(excludes = [], mirrors = DEFAULT_MIRRORS):
         pycodestyle_repository(name = "pycodestyle", mirrors = mirrors)
     if "pycps" not in excludes:
         pycps_repository(name = "pycps", mirrors = mirrors)
+    if "pyntcloud" not in excludes:
+        pyntcloud_repository(name = "pyntcloud", mirrors = mirrors)
     if "python" not in excludes:
         python_repository(name = "python")
     if "qdldl" not in excludes:

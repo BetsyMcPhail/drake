@@ -34,7 +34,7 @@ import sys
 import time
 
 import github3
-
+import itkwidgets
 from drake.tools.workspace.metadata import read_repository_metadata
 
 # We'll skip these repositories when making suggestions.

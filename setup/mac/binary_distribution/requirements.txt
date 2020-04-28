@@ -3,6 +3,7 @@ lxml
 matplotlib
 notebook
 pydot
+pyntcloud
 PyYAML
 pyzmq
 tornado

@@ -9,7 +9,6 @@ py_binary(
     name = "relnotes",
     srcs = ["relnotes.py"],
     deps = [
-        "@github3_py",
     ],
 )
 

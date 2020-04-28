@@ -1,4 +1,5 @@
 boto3
+itkwidgets
 jupyter
 pandas
 # Excluded due to https://github.com/sphinx-doc/sphinx/issues/6225
