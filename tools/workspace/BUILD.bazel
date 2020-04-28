@@ -36,7 +36,6 @@ drake_py_binary(
     deps = [
         ":module_py",
         "@github3_py",
-        "@itkwidgets",
     ],
 )
 

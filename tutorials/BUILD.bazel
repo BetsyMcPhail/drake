@@ -47,9 +47,8 @@ drake_jupyter_py_binary(
 drake_jupyter_py_binary(
     name = "rendering_multibody_plant",
     add_test_rule = 1,
-    deps = ["@github3_py",
-        "@itkwidgets",
-        "@pyntcloud"
+    deps = ["@pyntcloud_py",
+        "@itkwidgets_py",
         "//bindings/pydrake",
     ],
 )

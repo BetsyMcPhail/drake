@@ -33,7 +33,7 @@ load("@drake//tools/workspace/gtest:repository.bzl", "gtest_repository")
 load("@drake//tools/workspace/gurobi:repository.bzl", "gurobi_repository")
 load("@drake//tools/workspace/ibex:repository.bzl", "ibex_repository")
 load("@drake//tools/workspace/ignition_math:repository.bzl", "ignition_math_repository")  # noqa
-load("@drake//tools/workspace/itkwidgets:repository.bzl", "itkwidgets_repository")
+load("@drake//tools/workspace/itkwidgets_py:repository.bzl", "itkwidgets_py_repository")
 load("@drake//tools/workspace/ipopt:repository.bzl", "ipopt_repository")
 load("@drake//tools/workspace/json:repository.bzl", "json_repository")
 load("@drake//tools/workspace/jsoncpp:repository.bzl", "jsoncpp_repository")
@@ -163,8 +163,8 @@ def add_default_repositories(excludes = [], mirrors = DEFAULT_MIRRORS):
         ibex_repository(name = "ibex")
     if "ignition_math" not in excludes:
         ignition_math_repository(name = "ignition_math", mirrors = mirrors)
-    if "itkwidgets" not in excludes:
-        itkwidgets_repository(name = "itkwidgets", mirrors = mirrors)
+    if "itkwidgets_py" not in excludes:
+        itkwidgets_py_repository(name = "itkwidgets_py", mirrors = mirrors)
     if "ipopt" not in excludes:
         ipopt_repository(name = "ipopt")
     if "json" not in excludes:
@@ -225,8 +225,8 @@ def add_default_repositories(excludes = [], mirrors = DEFAULT_MIRRORS):
         pycodestyle_repository(name = "pycodestyle", mirrors = mirrors)
     if "pycps" not in excludes:
         pycps_repository(name = "pycps", mirrors = mirrors)
-    if "pyntcloud" not in excludes:
-        pyntcloud_repository(name = "pyntcloud", mirrors = mirrors)
+    if "pyntcloud_py" not in excludes:
+        pyntcloud_py_repository(name = "pyntcloud_py", mirrors = mirrors)
     if "python" not in excludes:
         python_repository(name = "python")
     if "qdldl" not in excludes:

@@ -9,7 +9,7 @@ package(
 )
 
 py_library(
-    name = "itkwidgets",
+    name = "itkwidgets_py",
     srcs = [
         "itkwidgets/__init__.py",
         "itkwidgets/_transform_types.py",
@@ -20,5 +20,6 @@ py_library(
         "itkwidgets/widget_compare.py",
         "itkwidgets/widget_line_profiler.py",
         "itkwidgets/widget_viewer.py",
-    ]
+    ],
+    imports = ["itkwidgets",]
 )
