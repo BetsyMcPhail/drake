@@ -51,7 +51,7 @@ private:
 };
 #endif
 
-void redirect_python_logging()
+void redirectPythonLogging()
 {
 #ifdef HAVE_SPDLOG
   // Redirect all logs to Python's `logging` module

@@ -97,7 +97,7 @@ PYBIND11_MODULE(_module_py, m) {
   m.def("set_log_level", &logging::set_log_level, py::arg("level"),
       doc.logging.set_log_level.doc);
 
-  internal::redirect_python_logging();
+  internal::redirectPythonLogging();
 
   py::enum_<drake::ToleranceType>(m, "ToleranceType", doc.ToleranceType.doc)
       .value("absolute", drake::ToleranceType::kAbsolute)

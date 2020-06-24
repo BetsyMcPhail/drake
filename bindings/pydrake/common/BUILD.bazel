@@ -77,7 +77,7 @@ drake_cc_library(
     name = "text_logging_pybind",
     hdrs = ["text_logging_pybind.h"],
     declare_installed_headers = 0,
-    visibility = ["//visibility:public"],
+    visibility = ["//visibility:private"],
 )
 
 drake_cc_library(
