@@ -6,7 +6,6 @@
 
 #include <mutex>
 
-#include <spdlog/details/null_mutex.h>
 #include <spdlog/sinks/base_sink.h>
 #include <spdlog/sinks/dist_sink.h>
 #endif
@@ -49,19 +48,18 @@ private:
   py::object py_logger_;
 
 };
-#endif
 
 void redirectPythonLogging()
 {
-#ifdef HAVE_SPDLOG
   // Redirect all logs to Python's `logging` module
   drake::logging::sink* const sink_base = drake::logging::get_dist_sink();
   auto* const dist_sink = dynamic_cast<spdlog::sinks::dist_sink_mt*>(sink_base);
   auto python_sink = std::make_shared<pylogging_sink>();
   dist_sink->set_sinks({python_sink});
-#endif
 }
-
+#else
+void redirectPythonLogging() {}
+#endif
 }  // namespace internal
 }  // namespace pydrake
 }  // namespace drake
