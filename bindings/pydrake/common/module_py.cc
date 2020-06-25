@@ -97,6 +97,16 @@ PYBIND11_MODULE(_module_py, m) {
   m.def("set_log_level", &logging::set_log_level, py::arg("level"),
       doc.logging.set_log_level.doc);
 
+  m.def("log_debug", [](const char* msg) { drake::log()->debug(msg); });
+
+  m.def("log_info", [](const char* msg) { drake::log()->info(msg); });
+
+  m.def("log_warn", [](const char* msg) { drake::log()->warn(msg); });
+
+  m.def("log_error", [](const char* msg) { drake::log()->error(msg); });
+
+  m.def("log_critical", [](const char* msg) { drake::log()->critical(msg); });
+
   internal::redirectPythonLogging();
 
   py::enum_<drake::ToleranceType>(m, "ToleranceType", doc.ToleranceType.doc)

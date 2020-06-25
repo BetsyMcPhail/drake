@@ -365,6 +365,11 @@ drake_py_unittest(
     deps = [":module_py"],
 )
 
+drake_py_unittest(
+    name = "text_logging_test",
+    deps = [":module_py"],
+)
+
 drake_cc_googletest(
     name = "type_pack_test",
     deps = [
