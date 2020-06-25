@@ -2,9 +2,9 @@
 #include "pybind11/pybind11.h"
 #include "pybind11/stl.h"
 
+#include "drake/bindings/pydrake/common/text_logging_pybind.h"
 #include "drake/bindings/pydrake/documentation_pybind.h"
 #include "drake/bindings/pydrake/pydrake_pybind.h"
-#include "drake/bindings/pydrake/common/text_logging_pybind.h"
 #include "drake/common/constants.h"
 #include "drake/common/drake_assert.h"
 #include "drake/common/drake_assertion_error.h"
@@ -96,6 +96,16 @@ PYBIND11_MODULE(_module_py, m) {
 
   m.def("set_log_level", &logging::set_log_level, py::arg("level"),
       doc.logging.set_log_level.doc);
+
+  m.def("log_debug", [](const char* msg) { drake::log()->debug(msg); });
+
+  m.def("log_info", [](const char* msg) { drake::log()->info(msg); });
+
+  m.def("log_warn", [](const char* msg) { drake::log()->warn(msg); });
+
+  m.def("log_error", [](const char* msg) { drake::log()->error(msg); });
+
+  m.def("log_critical", [](const char* msg) { drake::log()->critical(msg); });
 
   internal::redirectPythonLogging();
 
