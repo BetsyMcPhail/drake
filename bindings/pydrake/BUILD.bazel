@@ -397,6 +397,7 @@ drake_pybind_library(
 drake_py_binary(
     name = "text_logging_example",
     srcs = ["test/text_logging_example.py"],
+    data = [":module_py"],
     deps = [
         ":text_logging_test_py",
     ],
@@ -407,7 +408,6 @@ drake_py_unittest(
     data = [
         ":text_logging_example",
     ],
-    deps = [":module_py"],
 )
 
 # Test ODR (One Definition Rule).

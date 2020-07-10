@@ -2,8 +2,6 @@ import re
 import subprocess
 import unittest
 
-from pydrake.common import set_log_level
-
 
 class TestTextLogging(unittest.TestCase):
     def expected_message(self, spdlog_level):
