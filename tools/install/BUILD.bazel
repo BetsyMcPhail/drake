@@ -24,6 +24,12 @@ py_library(
     visibility = ["//visibility:public"],
 )
 
+py_library(
+    name = "install_helper",
+    srcs = ["install_helper.py"],
+)
+
+
 exports_files(
     [
         "install.py.in",
