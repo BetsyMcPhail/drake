@@ -56,14 +56,10 @@ EOF
 # Install bazel.
 # Keep this version number in sync with the drake/.bazeliskrc version number.
 if [[ $(arch) = "aarch64" ]]; then
-  # Check if bazel is already installed.
-  if [[ "$(which bazel)" ]]; then
-    echo "Bazel is already installed." >&2
-  else
-    echo "WARNING: On Ubuntu arm64 systems, Drake's install_prereqs does not" \
-    "automatically install Bazel on your behalf. You will need to install" \
-    "Bazel yourself. See https://bazel.build for instructions." >&2
-  fi
+  dpkg_install_from_wget \
+    bazel 7.0.2 \
+    https://github.com/bazelbuild/bazel/releases/download/7.0.2/bazel-7.0.2-linux-arm64 \
+    b02b1821e753cea3281ba65d6ea81c303dfe5f5476c9a2c1853cc9a6b66215c7
 else
   dpkg_install_from_wget \
     bazel 7.0.2 \
